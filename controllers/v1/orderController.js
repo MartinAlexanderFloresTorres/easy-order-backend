@@ -226,9 +226,7 @@ export const changeOrderStatus = async (req, res) => {
 
     // Si la orde ya a sido rechazada no se puede cancelar
     if (order.status === ORDER_STATUS.REJECTED) {
-      return res
-        .status(400)
-        .json({ message: 'La orden ha sido rechazada, Por el restaurante', status: order.status, paymentStatus: order.paymentStatus });
+      return res.status(400).json({ message: 'La orden ha sido rechazada, Por el restaurante', status: order.status, paymentStatus: order.paymentStatus });
     }
 
     // Si la orden ya a sido pagada
@@ -308,7 +306,7 @@ export const getOrderById = async (req, res) => {
         },
         {
           path: 'restaurant',
-          select: 'name slug address logo openingHours closingTime paymentMethods phone',
+          select: 'name slug address logo openingHours closingTime paymentMethods phone latitude longitude',
         },
         {
           path: 'items.menu',

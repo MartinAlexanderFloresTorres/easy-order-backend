@@ -6,7 +6,6 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon index.js",
-    "build": "babel src -d dist",
     "start": "node index.js",
     "lint": "eslint .",
     "seed": "node ./seeds/index.js"
