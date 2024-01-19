@@ -2,18 +2,17 @@ import sgMail from '@sendgrid/mail';
 
 /**
  *
- * @param {*} { email, name, token, confirmationCode }
- * @description Genera un email de confirmacion de cuenta
- * @example emailRegister({
+ * @param {*} { email, name, token , surveyId }
+ * @description Genera un email para recuperar password
+ * @example emailSurvey({
  *  email: 'white@gmail.com',
  *  name: 'White Code',
- *  token: 'SDAS213123QWEWQ213133123.SDF12123.AW',
- *  confirmationCode: '5X8H3'
+ *  surveyId: '5X8H3',
  * })
  * @returns {boolean} true o false
  */
 
-export const emailRegister = async ({ email, name, token, confirmationCode }) => {
+export const emailSurvey = async ({ email, name, surveyId }) => {
   const HTML = `
   <!DOCTYPE html>
   <html lang="es">
@@ -97,30 +96,22 @@ export const emailRegister = async ({ email, name, token, confirmationCode }) =>
     <body>
       <div class="card">
         <div class="container" style="margin-bottom: 40px">
-          <h2 style="text-transform: uppercase">Confirmar Cuenta</h2>
-          <p>Hola ${name}, Gracias por registrarte. Para confirmar tu cuenta, ingresa el siguiente código para confirmar tu cuenta</p>
-  
-          <div style="margin: 20px 0px">
-            <p style="margin-bottom: 20px"><strong>CODIGO:</strong></p>
-            <code>${confirmationCode}</code>
-          </div>
+          <h2 style="text-transform: uppercase">Encuesta de Satisfacción</h2>
+          <p>Hola ${name}, Gracias por elejirnos, nos gustaría saber tu opinión sobre tu experiencia en nuestro restaurante.</p>
   
           <div style="margin: 20px 0">
             <a
               class="boton"
               style="text-align: center; min-width: fit-content; margin-bottom: 10px"
-              href="${process.env.FRONTEND_URL}/auth/confirmation/${token}"
+              href="${process.env.FRONTEND_URL}/survey/${surveyId}"
               target="_blank"
             >
-              Ingresa el código
-            </a>
-            <a class="boton" style="text-align: center; min-width: fit-content" href="${process.env.FRONTEND_URL}/auth/confirmation/${token}/${confirmationCode}"target="_blank">
-              Confirmar directamente
+              Ir a la encuesta
             </a>
           </div>
   
           <p style="color: #ccc !important; font-size: 14px; text-align: center; line-height: 1.2">
-            Si no has solicitado la confirmación de tu cuenta, puedes ignorar este correo.
+            Recuerda que tu opinión es muy importante para nosotros, y nos ayuda a mejorar cada día.
           </p>
   
           <a href="${process.env.FRONTEND_URL}" target="_blank">${process.env.FRONTEND_URL}</a>
@@ -144,14 +135,14 @@ export const emailRegister = async ({ email, name, token, confirmationCode }) =>
       </div>
     </body>
   </html>
-  `;
+`;
 
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
   const msg = {
     to: email,
     from: 'martinflorestorres21@gmail.com',
-    subject: 'Compruebe su cuenta - Orden Facil',
+    subject: 'Encuesta de Satisfacción - Orden Facil',
     text: 'Orden Facil',
     html: HTML,
   };

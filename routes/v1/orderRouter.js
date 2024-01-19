@@ -1,15 +1,7 @@
 import express from 'express';
 import checkRole, { ROLES } from '../../middlewares/v1/checkRole.js';
 import checkAuth from '../../middlewares/v1/checkAuth.js';
-import {
-  cancelOrder,
-  changeOrderStatus,
-  create,
-  getOrderById,
-  getOrdersByRestaurant,
-  getOrdersByUser,
-  payOrder,
-} from '../../controllers/v1/orderController.js';
+import { cancelOrder, changeOrderStatus, create, getOrderById, getOrdersByRestaurant, getOrdersByUser, payOrder } from '../../controllers/v1/orderController.js';
 
 // Instanciando el router de express
 const orderRoutes = express.Router();

@@ -2,6 +2,8 @@ import { isValidObjectId } from 'mongoose';
 import Menu from '../../models/v1/Menu.js';
 import Order, { ORDER_STATUS, PAYMENT_STATUS } from '../../models/v1/Order.js';
 import Coupon from '../../models/v1/Coupon.js';
+import { emailSurvey } from '../../emails/v1/emailSurvey.js';
+import { Survey } from '../../models/v1/Survey.js';
 
 // CREAR ORDEN
 export const create = async (req, res) => {
@@ -347,7 +349,7 @@ export const payOrder = async (req, res) => {
       return res.status(400).json({ message: 'El id del restaurante no es válido' });
     }
 
-    const order = await Order.findOne({ _id: orderId, restaurant: restaurantId, isActive: true });
+    const order = await Order.findOne({ _id: orderId, restaurant: restaurantId, isActive: true }).populate('user', 'name email');
 
     if (!order) {
       return res.status(404).json({ message: 'La orden no existe' });
@@ -370,6 +372,19 @@ export const payOrder = async (req, res) => {
 
     order.paymentStatus = PAYMENT_STATUS.PAID;
     order.status = ORDER_STATUS.COMPLETED;
+
+    // Buscando la ultima encuesta activa
+    const surveyLast = await Survey.findOne({ restaurant: order.restaurant, isActive: true }).sort({ createdAt: -1 });
+
+    // Si existe una encuesta activa
+    if (surveyLast) {
+      // Enviando el correo de la encuesta
+      emailSurvey({
+        name: order.user.name,
+        email: order.user.email,
+        surveyId: surveyLast._id,
+      });
+    }
 
     await order.save();
 

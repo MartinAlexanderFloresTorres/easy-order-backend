@@ -11,6 +11,7 @@ import orderRoutes from './routes/v1/orderRouter.js';
 import couponRouter from './routes/v1/couponRouter.js';
 import tableOrderRouter from './routes/v1/tableOrderRouter.js';
 import subscriptionPlanRouter from './routes/v1/subscriptionPlanRouter.js';
+import surveryRoutes from './routes/v1/surveryRoutes.js';
 
 // Load env vars
 dotenv.config();
@@ -47,6 +48,7 @@ app.use('/api/v1/order', orderRoutes);
 app.use('/api/v1/table-order', tableOrderRouter);
 app.use('/api/v1/coupon', couponRouter);
 app.use('/api/v1/subscription-plan', subscriptionPlanRouter);
+app.use('/api/v1/survey', surveryRoutes);
 
 // Server port
 const PORT = process.env.PORT || 4000;

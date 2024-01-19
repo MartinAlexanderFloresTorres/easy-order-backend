@@ -85,6 +85,14 @@ const menuSchema = new mongoose.Schema(
         },
       },
     ],
+    // Valoración promedio del menu
+    averageRating: {
+      type: Number,
+      min: 0,
+      max: 5,
+      default: 0,
+    },
+
     nutritionalInformation: [
       {
         name: {
